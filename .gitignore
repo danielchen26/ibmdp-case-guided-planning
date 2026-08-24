@@ -1,0 +1,20 @@
+# Never commit the proprietary cohort or anything derived from it that carries
+# measured values.  `synthesize_cns_surrogate.py` and `verify_surrogate.py` both
+# expect the real file at data/multitier.csv when run locally; it must stay local.
+data/multitier.csv
+*multitier*
+# Sweep outputs run against the real cohort carry a kpuu column of real values.
+results.csv
+all_pareto.csv
+all_cohort.csv
+shard_*.csv
+cohort_*.csv
+
+# Julia / Python / editor noise
+*.jl.cov
+*.jl.*.cov
+__pycache__/
+*.pyc
+.DS_Store
+*.bak
+*.bak-*

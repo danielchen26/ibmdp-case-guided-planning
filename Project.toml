@@ -1,0 +1,22 @@
+[deps]
+CEEDesigns = "e939450b-799e-4198-a5f5-3f2f7fb1c671"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+MCTS = "e12ccd36-dcad-5f33-8774-9175229e7b33"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+
+# CEEDesigns is resolved from the vendored copy in `engine/`, NOT from the public
+# Merck/CEEDesigns.jl registry package.  This is deliberate and necessary: the
+# public releases (v0.3.5-v0.3.9, the only registered versions) do not contain the
+# ensemble-analysis layer or the ValueIteration module this study depends on -- the
+# upstream integration note in src/GenerativeDesigns/Readme.md states that
+# "`ValueIteration/`-related code was intentionally excluded".  See SETUP.md.
+[sources]
+CEEDesigns = {path = "engine"}

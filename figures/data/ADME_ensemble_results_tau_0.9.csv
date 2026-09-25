@@ -1,0 +1,35 @@
+Threshold,Action_Set,Average_Utility,Frequency
+0.0,"[""CL_total_dog_exp""]",27273.15607670543,3
+0.0,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",26730.78090129319,7
+0.0,"[""CL_total_rat_exp""]",25102.277456551798,2
+0.0,"[""CL_total_rat_exp"", ""CL_total_human_exp""]",26789.123205964952,4
+0.0,"[""CL_total_human_exp""]",17649.665038874467,14
+0.4,"[""CL_total_dog_exp""]",3812.544580360898,2
+0.4,"[""CL_total_rat_exp""]",3832.155730163723,2
+0.4,"[""CL_total_human_exp""]",3897.248941361231,1
+0.3,"[""CL_total_dog_exp""]",3814.9749749749926,2
+0.3,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3804.4617355693545,2
+0.3,"[""CL_total_rat_exp""]",3817.3542906784737,5
+0.3,"[""CL_total_human_exp""]",3825.346838028809,1
+0.7,"[""CL_total_dog_exp""]",3824.209104007982,2
+0.7,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3795.473663128374,1
+0.5,"[""CL_total_dog_exp""]",3831.5705128205113,1
+0.5,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3800.9887241951405,3
+0.5,"[""CL_total_rat_exp""]",3791.758793969829,1
+0.2,"[""CL_total_dog_exp""]",3819.338226137656,4
+0.2,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3807.357571393769,4
+0.2,"[""CL_total_rat_exp""]",3817.3434453071445,4
+0.2,"[""CL_total_human_exp""]",3884.4942444980766,3
+0.9,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3798.0380380380407,1
+0.9,"[""CL_total_rat_exp""]",3821.02102102101,1
+0.1,"[""CL_total_dog_exp""]",3822.6176268834624,9
+0.1,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3833.0062274008305,4
+0.1,"[""CL_total_rat_exp""]",3841.056966986315,4
+0.1,"[""CL_total_rat_exp"", ""CL_total_human_exp""]",4040.8479042327904,5
+0.1,"[""CL_total_dog_exp"", ""CL_total_human_exp""]",4218.57156978004,3
+0.1,"[""CL_total_human_exp""]",3903.972189958742,5
+1.0,"[""CL_total_dog_exp""]",3830.7107107106945,1
+1.0,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3814.9038461538594,1
+1.0,"[""CL_total_rat_exp""]",3794.9939927913447,2
+0.6,"[""CL_total_dog_exp""]",3829.496504522112,3
+0.6,"[""CL_total_rat_exp""]",3804.6990931574574,1

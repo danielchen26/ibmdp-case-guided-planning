@@ -1,0 +1,36 @@
+Threshold,Action_Set,Average_Utility,Frequency
+0.3,"[""CL_total_dog_exp""]",3816.899734949645,4
+0.3,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3817.9863788032603,4
+0.3,"[""CL_total_rat_exp""]",3828.985370297143,4
+1.0,"[""CL_total_dog_exp""]",3811.657943680043,4
+1.0,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3800.0075360989467,2
+0.7,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3801.385843210788,2
+0.7,"[""CL_total_rat_exp""]",3802.131510154828,1
+0.0,"[""CL_total_dog_exp""]",27997.14440769825,5
+0.0,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",26077.419103809818,3
+0.0,"[""CL_total_rat_exp""]",27771.30875366526,4
+0.0,"[""CL_total_rat_exp"", ""CL_total_human_exp""]",26861.932408482524,1
+0.0,"[""CL_total_human_exp""]",18240.83091552877,17
+0.2,"[""CL_total_dog_exp""]",3818.23253873374,3
+0.2,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3830.763977956722,4
+0.2,"[""CL_total_rat_exp""]",3829.222571081487,5
+0.2,"[""CL_total_human_exp""]",3894.745840432434,2
+0.9,"[""CL_total_dog_exp""]",3789.123018262066,1
+0.9,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3804.2042042042026,1
+0.8,"[""CL_total_dog_exp""]",3803.8304971638204,3
+0.8,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3790.5110907575636,2
+0.8,"[""CL_total_rat_exp""]",3799.7319336760174,3
+0.5,"[""CL_total_dog_exp""]",3811.258858449851,2
+0.5,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3825.38415255021,2
+0.5,"[""CL_total_rat_exp""]",3811.232186476752,2
+0.1,"[""CL_total_dog_exp""]",3842.2688596718012,6
+0.1,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3827.38569843149,6
+0.1,"[""CL_total_rat_exp""]",3834.766929272164,12
+0.1,"[""CL_total_rat_exp"", ""CL_total_human_exp""]",4041.002538205892,2
+0.1,"[""CL_total_human_exp""]",3911.560506861609,4
+0.4,"[""CL_total_dog_exp""]",3814.2523864272152,3
+0.4,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3813.449888673903,4
+0.4,"[""CL_total_rat_exp""]",3794.8265490274794,1
+0.4,"[""CL_total_human_exp""]",3872.7210574293476,1
+0.6,"[""CL_total_dog_exp"", ""CL_total_rat_exp""]",3794.6212616805005,2
+0.6,"[""CL_total_rat_exp""]",3797.8321497466304,2

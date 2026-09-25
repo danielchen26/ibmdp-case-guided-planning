@@ -46,7 +46,7 @@ Gaussian-copula resampling (`synthesize_cns_surrogate.py`, fixed seed):
 
 | Property | Real | Synthetic |
 |---|---|---|
-| Marginal distributions (2-sample KS, p>0.05 = indistinguishable) | — | **15/15 columns** p>0.05 |
+| Marginal distributions (2-sample KS; p>0.05 = no difference detected) | — | **15/15 columns** p>0.05, max KS 0.091 |
 | Class balance (kpuu > 0.5) | 88 good / 132 bad | **88 good / 132 bad** |
 | 15×15 correlation matrix (Frobenius distance) | — | **1.78** (0 = identical) |
 | corr(QSAR, assay) e.g. 1uM_PgP↔qsar | +0.79 | +0.70 |
@@ -87,6 +87,14 @@ individual measurement. The weakest match is `plasma_protein_binding`
 (KS=0.091, p=0.32), still far from rejection. A reader cannot re-run this check
 without the proprietary source, which is why the output is recorded here.
 
+**How to read a non-significant KS test.** `p > 0.05` means the test found no
+difference large enough to detect at 220 samples per arm. It is *not* evidence
+that the two marginals are equal: a two-sample KS test cannot be inverted into an
+equivalence claim, and at this sample size it has limited power against
+differences confined to the tails. The load-bearing quantity is therefore the KS
+statistic itself — the largest discrepancy found anywhere in the CDF, at most
+0.091 across the fifteen columns — not the p-value beside it.
+
 ### Why the value-level check matters
 
 Row-wise nearest-neighbor distance is **not sufficient** to establish absence of
@@ -110,11 +118,21 @@ like the real data.
 ## Method reproduction
 
 Running IBMDP on this surrogate reproduces the paper's **cost-vs-uncertainty
-Pareto behavior**: at a tight terminal-uncertainty tolerance (ε ≤ 0.1) the median
-first-batch cost is **\$4,000** (measure the decisive *in vivo* k_puu assay
-directly); at a loose tolerance (ε ≥ 0.5) it falls to **\$800** (cheap *in vitro*
-PgP/BCRP proxies suffice) — matching the real-data medians reported in the paper.
-Reproduce with `julia --project=. cns220_worker_synth.jl 1 220 out.csv 2000 10`.
+Pareto behavior**, level by level: at ε = 0 the median first-batch cost is
+**\$4,000** (measure the decisive *in vivo* k_puu assay directly), and at **every
+one** of the ten looser grid levels ε = 0.1 … 1.0 it is **\$800** (cheap *in
+vitro* PgP/BCRP proxies suffice). Those eleven per-level medians equal the ones
+the paper reports for the real cohort.
+
+Quote the per-level medians, not a band-pooled one. A median taken over the
+pooled band ε ≤ 0.1 comes out at \$4,000, but only because the ε = 0 level
+contributes 185 expensive first batches and so dominates the 193 rows at ε = 0.1,
+whose own median is already \$800 — that is a property of the pooling, not of the
+tolerance. The paper makes the same point about its own earlier revision.
+
+Reproduce with `julia --project=. cns220_worker_synth.jl 1 220 out.csv 2000 10`,
+then `julia --project=. cns220_figure.jl --results out.csv --no-plot`, which
+prints the per-level medians directly.
 
 ## Files
 - `cns220_synthetic.csv` — the surrogate dataset (this directory)

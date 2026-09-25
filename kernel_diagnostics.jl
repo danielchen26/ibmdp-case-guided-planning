@@ -10,6 +10,7 @@
 #   julia --project=. kernel_diagnostics.jl                 # lambda_w*lambda_k = 25 / 100
 #   julia --project=. kernel_diagnostics.jl --unit          # lambda_w*lambda_k = 1
 #   julia --project=. kernel_diagnostics.jl --gamma 0.5     # the synthetic-benchmark value
+#   julia --project=. kernel_diagnostics.jl --ratio         # paired comparison across settings
 #
 # The second block additionally reports the noise-term prefactor 1 - 1/N_eff by depth and
 # its spread across candidate batches, i.e. the diagnostics quoted where the ESI discusses
@@ -195,3 +196,45 @@ println()
         100argminMoves[] / length(spanRatio))
 @printf("    and flips %.0f%% of pairwise batch orderings (%d of %d pairs)\n",
         100pairFlips[] / pairTotal[], pairFlips[], pairTotal[])
+
+# ---------------------------------------------------------------------------------
+# Paired coefficient comparison (--ratio).  The ESI quotes two different ratios between
+# coefficient settings: the ratio of the per-cohort median N_eff, and the median of the
+# per-compound ratios.  The second needs both settings evaluated on the *same* compound
+# in one pass, which separate single-setting runs cannot supply, so it is computed here.
+# This block ignores --unit/--gamma and always evaluates all three settings.
+if "--ratio" in ARGS
+    settings = [("study (25/100)", RIPK1_CONFIG.sampler_params.in_silico_lambda,
+                                   RIPK1_CONFIG.sampler_params.physical_lambda),
+                ("kappa = 0.5",    0.5 / lw, 0.5 / lw),
+                ("kappa = 1",      1.0 / lw, 1.0 / lw)]
+    dists = map(settings) do (_, ks, kp)
+        d = Dict()
+        foreach(e -> push!(d, e => QuadraticDistance(; λ = ks)), in_silico)
+        foreach(e -> push!(d, e => QuadraticDistance(; λ = kp)), physical)
+        d
+    end
+    paired = [Float64[] for _ in settings]
+    for i in 1:nrow(data)
+        row = data[i, :]
+        pool = select(data[setdiff(1:nrow(data), i), :], Not(:compound_id))
+        ev = Evidence([q => row[q] for q in qs]...)
+        for (k, dist) in enumerate(dists)
+            (; weights) = DistanceBased(
+                pool; target = RIPK1_CONFIG.sampler_params.target,
+                uncertainty = Variance(), similarity = Exponential(; λ = lw),
+                distance = dist)
+            w = weights(ev)
+            push!(paired[k], 1 / sum(abs2, w ./ sum(w)))
+        end
+    end
+    println()
+    for (k, (name, _, _)) in enumerate(settings)
+        @printf("median N_eff at %-15s : %8.2f\n", name, median(paired[k]))
+    end
+    for k in 2:length(settings)
+        @printf("%s vs study: ratio of medians %.1fx, median of per-compound ratios %.1fx\n",
+                settings[k][1], median(paired[k]) / median(paired[1]),
+                median(paired[k] ./ paired[1]))
+    end
+end

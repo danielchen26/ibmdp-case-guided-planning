@@ -1,6 +1,16 @@
 #!/usr/bin/env python3
-"""Verify the synthetic CNS surrogate: (A) distribution match, (B) no leakage."""
-import csv, sys
+"""Verify the synthetic CNS surrogate: (A) distribution match, (B) no leakage.
+
+Usage:  python3 verify_surrogate.py [--real PATH] [--synth PATH]
+
+This is the author-side release gate, so it needs BOTH the surrogate (shipped
+here) and the real cohort (proprietary, NOT shipped -- see the data policy in
+README.md).  Without the real file it cannot run at all; it exits 2 with an
+explanation rather than pretending to have verified anything.  Every line it
+prints is an aggregate: counts, medians, KS statistics and correlations.  No
+individual compound identifier or measured value is ever emitted.
+"""
+import csv, os, sys
 import numpy as np
 from scipy import stats
 
@@ -10,20 +20,42 @@ def load(path):
     X = np.array([[float(r[c]) for c in cols] for r in rows], dtype=float)
     return cols, X
 
-cols, R = load("data/multitier.csv")       # real
-_,    S = load("data/cns220_synthetic.csv")  # synthetic
+def argval(flag, default):
+    return sys.argv[sys.argv.index(flag)+1] if flag in sys.argv else default
+
+real_path  = argval("--real",  os.environ.get("IBMDP_REAL_CSV", "data/multitier.csv"))
+synth_path = argval("--synth", "data/cns220_synthetic.csv")
+
+if not os.path.exists(real_path):
+    print(f"cannot verify: real cohort not found at {real_path}\n\n"
+          "The real CNS cohort is proprietary Merck & Co., Inc. research data and is\n"
+          "deliberately absent from this repository, so this gate is runnable only by\n"
+          "the authors.  Point it at the real file to reproduce the released verdict:\n"
+          "  python3 verify_surrogate.py --real /path/to/multitier.csv\n"
+          "The verdict this gate returned for the shipped surrogate is recorded in\n"
+          "data/README_synthetic.md.", file=sys.stderr)
+    sys.exit(2)
+
+cols, R = load(real_path)     # real (proprietary; aggregates only are printed)
+_,    S = load(synth_path)    # synthetic (shipped)
 
 print(f"real: {R.shape}, synth: {S.shape}\n")
 
-# ---- (A1) marginal match: two-sample KS test per column (want p > 0.05 = indistinguishable)
-print("== (A1) Marginal distribution match (KS test; p>0.05 = cannot distinguish) ==")
+# ---- (A1) marginal match: two-sample KS test per column.
+# p > 0.05 means the test does not detect a difference at 220 samples per arm.
+# That is NOT evidence that the two marginals are equal -- a two-sample KS test
+# cannot be inverted into an equivalence claim, and at this N it has limited power
+# against differences in the tails.  Read the KS statistic itself, reported below,
+# as the size of the largest discrepancy found.
+print("== (A1) Marginal distribution match (KS test; p>0.05 = no detected difference) ==")
 nfail=0
 for j,c in enumerate(cols):
     ks,p = stats.ks_2samp(R[:,j], S[:,j])
     flag = "" if p>0.05 else "  <-- differs"
     if p<=0.05: nfail+=1
     print(f"  {c:<26} KS={ks:.3f} p={p:.3f}{flag}")
-print(f"  -> {len(cols)-nfail}/{len(cols)} columns statistically indistinguishable\n")
+print(f"  -> {len(cols)-nfail}/{len(cols)} columns show no detected difference "
+      f"(non-rejection, not established equivalence)\n")
 
 # ---- (A2) class balance
 def bal(M):
